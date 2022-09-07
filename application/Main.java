@@ -124,7 +124,7 @@ public class Main extends Application {
             fileAndLabel.getChildren().add(fileText);
         inputBoxes.getChildren().add(fileAndLabel);
         
-        TableView dataTable = new TableView<>();
+        TableView dataTable = new TableView();
           TableColumn<String, MilkStat> dateColumn = new TableColumn<>("Date");
           dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
           TableColumn<String, MilkStat> idColumn = new TableColumn<>("Farm ID");
@@ -185,13 +185,15 @@ public class Main extends Application {
             
             try {
               Calendar date = textToDate(dateText);
-              date.set(Calendar.MONTH, date.get(Calendar.MONTH) - 1); // Now January = 0
-              date.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH) - 1); // Now first day = 0
               int weight = Integer.valueOf(weightText);
               MilkStat newStat = new MilkStat(date, id, weight);
               fc.addMilkStat(newStat);
-              dataTable.getItems().add(newStat);
-              
+
+              Calendar displayDate = (Calendar) date.clone();
+              displayDate.set(Calendar.MONTH, date.get(Calendar.MONTH) + 1);
+              MilkStat displayStat = new MilkStat(displayDate, id, weight);
+              dataTable.getItems().add(displayStat);
+
               if (outputCb.isSelected() && isCSV(outputFile)) {
                 FileWriter append = new FileWriter(outputFile, true);
                 String appendStr = dateText + "," + id + "," + weightText;
@@ -404,7 +406,7 @@ public class Main extends Application {
       int year = Integer.valueOf(yearText);
       
       String monthText = dateArray[1];
-      int month = Integer.valueOf(monthText);
+      int month = Integer.valueOf(monthText) - 1;
       if (!(0 <= month && month < 12)) {
         throw new NumberFormatException("Months must be between 0 and 11");
       }
