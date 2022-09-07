@@ -82,6 +82,7 @@ public class Main extends Application {
       inputBoxes.setAlignment(Pos.CENTER_LEFT);
         HBox fileAndLabel = new HBox(10);
           FileChooser fileChooser = new FileChooser();
+          fileChooser.setInitialDirectory(new File(System.getProperty("user.dir"))); // open in working directory
           Label fileText = new Label("Select a file...");
           Button fileSelectButton = new Button("Open");
             EventHandler<MouseEvent> onFileSelectPress = new EventHandler<MouseEvent>() {
@@ -124,12 +125,12 @@ public class Main extends Application {
             fileAndLabel.getChildren().add(fileText);
         inputBoxes.getChildren().add(fileAndLabel);
         
-        TableView dataTable = new TableView();
-          TableColumn<String, MilkStat> dateColumn = new TableColumn<>("Date");
+        TableView<MilkStat> dataTable = new TableView<>();
+          TableColumn<MilkStat, String> dateColumn = new TableColumn<>("Date");
           dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
-          TableColumn<String, MilkStat> idColumn = new TableColumn<>("Farm ID");
+          TableColumn<MilkStat, String> idColumn = new TableColumn<>("Farm ID");
           idColumn.setCellValueFactory(new PropertyValueFactory<>("farmId"));
-          TableColumn<String, MilkStat> weightColumn = new TableColumn<>("Weight");
+          TableColumn<MilkStat, String> weightColumn = new TableColumn<>("Weight");
           weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
           dataTable.getColumns().add(dateColumn);
           dataTable.getColumns().add(idColumn);
@@ -154,6 +155,7 @@ public class Main extends Application {
           fileOutputSelection.getChildren().add(outputCb);
           Label outputFileText = new Label("Select a file...");
           FileChooser fileOutputChooser = new FileChooser();
+          fileOutputChooser.setInitialDirectory(new File(System.getProperty("user.dir"))); // open in working directory
           Button fileOutputButton = new Button("Open");
             EventHandler<MouseEvent> onFileOutputPress = new EventHandler<MouseEvent>() {
               @Override
